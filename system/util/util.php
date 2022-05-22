@@ -12,27 +12,35 @@ function chkArray($array,$key) {
 }
 
 /**
- * Filtra um array e retorna apenas os que passarem o filtro
- * @param array $array
+ * Filtra um array e guarda apenas os que passarem o filtro e tambem retorna um array com os respetivos elementos que passarem o filtro
+ * @param array &$array
  * @param closure $callback
  * @return array
  */
-function filter($array, $callback){
+function filter(array &$array, closure $callback){
     $newArray = [];
 
-    foreach ($array as $item) {
+    foreach ($array as $item)
         if($callback($item)) $newArray[] = $item;
-    }
 
+
+    $array = $newArray;
     return $newArray;
 }
 
-function chunkArray($array, $nItens=3){
+/**
+ * divide um array em varios e retorna esses arrays dentro de um array
+ * @param $array
+ * @param int $nItems
+ * @return array
+ */
+function chunkArray($array, int $nItems=3): array
+{
     $count = 0;
-    $x = 1;
+    $x = 0;
     $new_arr = [];
     for ($i = 0; $i < count($array); $i++) {
-        if ($count == $nItens) {
+        if ($count == $nItems) {
             $count = 0;
             $x++;
         }
@@ -65,7 +73,7 @@ function inArray($array, $needles, $sensitiveCase=true, $ignore=[]) {
     return false;
 }
 
-function xml_encode(array $arr, string $name_for_numeric_keys = "key"): string {
+function xml_encode(array $arr, string $name_for_numeric_keys = "item"): string {
     if (empty ( $arr )) {
         // avoid having a special case for <root/> and <root></root> i guess
         return '';
@@ -124,7 +132,7 @@ function xml_encode(array $arr, string $name_for_numeric_keys = "key"): string {
         if (! empty ( $val ) || $val === '0') {
             if ($is_iterable_compat ( $val )) {
                 $asoc = $isAssoc ( $val );
-                $tmp = hhb_xml_encode ( $val, is_int ( $key ) ? $name_for_numeric_keys : $key );
+                $tmp = xml_encode ( $val, is_int ( $key ) ? $name_for_numeric_keys : $key );
                 // var_dump ( $tmp );
                 // die ();
                 $tmpDom = new DOMDocument();

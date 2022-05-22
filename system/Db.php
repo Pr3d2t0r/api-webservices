@@ -33,10 +33,10 @@ class Db {
         return $db->fetch();
     }
 
-    public function getAll($table){
+    public function getAll($table, $mode = PDO::FETCH_ASSOC){
         $db = $this->pdo->prepare("SELECT * FROM $table");
         $db->execute();
-        $db->setFetchMode(PDO::FETCH_OBJ);
+        $db->setFetchMode($mode);
         return $db->fetchAll();
     }
 

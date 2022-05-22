@@ -3,19 +3,16 @@
 class UserResponseHandler extends ResponseHandler {
     public function index(){
         $parametros = ( func_num_args() >= 1 ) ? func_get_arg(0) : [];
-        $className = strtoupper($parametros['type']) ."Adapter";
-        $adapter = new $className();
 
         if (isset($parametros[0]))
-            $result = $this->db->getById("users", $parametros[0], PDO::FETCH_OBJ);
+            $result = $this->db->getById("users", $parametros[0]);
         else
             throw new Exception("Missing parameters.");
 
         if ($result === false)
             throw new Exception("User doesn't exist!");
 
-        $adapter->set($result);
-        echo $adapter->run();
+        return $result;
 
         /*$success = $this->db->insert("users", [
             "nome" => "César",
@@ -27,11 +24,17 @@ class UserResponseHandler extends ResponseHandler {
         ]);
 
         if ($success === false)
-            throw new Exception("sasasa");
+            throw new Exception("Error on inserting!");
 
-        $adapter->set([
+        return [
             "success" => "User inserted successfully!"
-        ]);
-        echo $adapter->run();*/
+        ];
+        */
+    }
+
+    public function all(){
+        $parametros = ( func_num_args() >= 1 ) ? func_get_arg(0) : [];
+
+        return $this->db->getAll("users");
     }
 }

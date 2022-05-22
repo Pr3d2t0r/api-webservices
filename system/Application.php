@@ -10,18 +10,17 @@ class Application
     }
 
     public function run() {
+        $className = strtoupper($this->request->type) ."Adapter";
+        $adapter = new $className();
         try {
-            $this->router->use($this->request);
+            $adapter->set($this->router->use($this->request));
         } catch (Exception $ex) {
-            $className = strtoupper($this->request->parameters['type']) ."Adapter";
-            $adapter = new $className();
             $adapter->set([
                "error" => $ex->getMessage()
             ]);
-
-            echo $adapter->run();
         } finally {
-            header('Content-Type:application/' . $this->request->parameters["type"]);
+            echo $adapter->run();
+            header('Content-Type:application/' . $this->request->type);
         }
     }
 }

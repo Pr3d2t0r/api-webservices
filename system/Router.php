@@ -40,35 +40,18 @@ class Router{
      */
     public function use(Request &$request){
         if(isset($this->routes[$request->page][$request->method])) {
-            $in_arr = inArray($request->parameters, ["json", "xml"], false, ["get"]);
-
-            if ($in_arr !== false){
-                $request->parameters["type"] = $request->parameters[$in_arr];
-                unset($request->parameters[$in_arr]);
-            }else{
-                $request->parameters["type"] = DEFAULT_TYPE;
-            }
-
             if (method_exists($this->routes[$request->page][strtoupper($request->method)], $request->action)) {
-                $this->routes[$request->page][strtoupper($request->method)]->{$request->action}($request->parameters);
-                return;
+                return $this->routes[$request->page][strtoupper($request->method)]->{$request->action}($request->parameters);
             }
             if (is_numeric($request->action)){
                 array_unshift($request->parameters, $request->action);
-                $this->routes[$request->page][strtoupper($request->method)]->index($request->parameters);
-                return;
-            }
-            if (strtoupper($request->action) == "JSON" || strtoupper($request->action) == "XML"){
-                $request->parameters['type'] = $request->action;
-                $this->routes[$request->page][strtoupper($request->method)]->index($request->parameters);
-                return;
+                return $this->routes[$request->page][strtoupper($request->method)]->index($request->parameters);
             }
         }
 
         if(isset($this->routes['404']['GET'])){
-            $this->routes['404']['GET']->index(['errorCode' => '404']);
-            return;
+            return $this->routes['404']['GET']->index(['errorCode' => '404']);
         }
-        echo "404" . $request;
+        throw new Exception("404 Page Not Found");
     }
 }
