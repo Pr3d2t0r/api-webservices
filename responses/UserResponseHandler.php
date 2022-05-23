@@ -37,4 +37,28 @@ class UserResponseHandler extends ResponseHandler {
 
         return $this->db->getAll("users");
     }
+
+    public function update() {
+        $parametros = (func_num_args() >= 1) ? func_get_arg(0) : [];
+
+        if (isset($parametros[0]))
+            $result = $this->db->getById("users", $parametros[0]);
+        else
+            throw new Exception("Missing parameters.");
+
+        if ($result === false)
+            throw new Exception("User doesn't exist!");
+
+        $result = $this->db->update("users", [
+            "username" => "abc",
+            "id" => $parametros[0],
+        ]);
+
+        if ($result === false)
+            throw new Exception("Couldn't update this user.");
+
+        return [
+            "success" => "User updated successfully!"
+        ];
+    }
 }

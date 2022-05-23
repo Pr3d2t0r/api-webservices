@@ -68,5 +68,19 @@ class Db {
         if (count($data) == 0)
             throw new Exception("Invalid update data.");
 
+        $strData = "";
+
+        foreach ($data as $column => $value) {
+            if ($column == 'id')
+                continue;
+
+            $strData .= $column . " = ?,";
+        }
+
+        $strData = substr($strData, 0, strlen($strData) - 1);
+
+        $db = $this->pdo->prepare("UPDATE $table SET $strData WHERE id = ?");
+
+        return $db->execute(array_values($data));
     }
 }
