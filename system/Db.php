@@ -83,4 +83,20 @@ class Db {
 
         return $db->execute(array_values($data));
     }
+
+    public function delete($table, $data = []) {
+        if (count($data) == 0)
+            throw new Exception("Invalid delete data.");
+
+        $strData = "";
+
+        foreach ($data as $column => $value)
+            $strData .= $column . " = ?,";
+
+        $strData = substr($strData, 0, strlen($strData) - 1);
+
+        $db = $this->pdo->prepare("DELETE FROM $table WHERE $strData");
+
+        return $db->execute(array_values($data));
+    }
 }

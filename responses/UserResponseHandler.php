@@ -61,4 +61,27 @@ class UserResponseHandler extends ResponseHandler {
             "success" => "User updated successfully!"
         ];
     }
+
+    public function delete() {
+        $parametros = (func_num_args() >= 1) ? func_get_arg(0) : [];
+
+        if (isset($parametros[0]))
+            $result = $this->db->getById("users", $parametros[0]);
+        else
+            throw new Exception("Missing parameters.");
+
+        if ($result === false)
+            throw new Exception("User doesn't exist!");
+
+        $result = $this->db->delete("users", [
+            "id" => $parametros[0]
+        ]);
+
+        if ($result === false)
+            throw new Exception("Couldn't delete this user.");
+
+        return [
+            "success" => "User deleted successfully!"
+        ];
+    }
 }
