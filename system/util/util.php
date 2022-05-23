@@ -73,6 +73,29 @@ function inArray($array, $needles, $sensitiveCase=true, $ignore=[]) {
     return false;
 }
 
+function formatQueryParams($data = [], $columnType = ",", $ignore = []) {
+    $strData = "";
+    $strValue = "";
+
+    foreach ($data as $column => $value) {
+        if (in_array($column, $ignore))
+            continue;
+
+        $strData .= $column . $columnType;
+        $strValue .= "?,";
+    }
+
+    $strData = substr($strData, 0, strlen($strData) - 1);
+
+    if ($strValue != "")
+        $strValue = substr($strValue, 0, strlen($strValue) - 1);
+
+    return [
+        $strData,
+        $strValue
+    ];
+}
+
 function xml_encode(array $arr, string $name_for_numeric_keys = "item"): string {
     if (empty ( $arr )) {
         // avoid having a special case for <root/> and <root></root> i guess

@@ -44,20 +44,9 @@ class Db {
         if (count($data) == 0)
             throw new Exception("Invalid insert data.");
 
-        $strData = "";
-        $strValue = "";
+        $formatedQueryParams = formatQueryParams($data);
 
-        foreach ($data as $column => $value) {
-            $strData .= $column . ",";
-            $strValue .= "?,";
-        }
-
-        $i = 1;
-
-        $strData = substr($strData, 0, strlen($strData) - 1);
-        $strValue = substr($strValue, 0, strlen($strValue) - 1);
-
-        $db = $this->pdo->prepare("INSERT INTO $table ($strData) VALUES ($strValue)");
+        $db = $this->pdo->prepare("INSERT INTO $table ($formatedQueryParams[0]) VALUES ($formatedQueryParams[1])");
         foreach($data as $value)
             $db->bindValue($i++, $value);
 
@@ -88,14 +77,9 @@ class Db {
         if (count($data) == 0)
             throw new Exception("Invalid delete data.");
 
-        $strData = "";
+        $formatedQueryParams = formatQueryParams($data, " = ?,");
 
-        foreach ($data as $column => $value)
-            $strData .= $column . " = ?,";
-
-        $strData = substr($strData, 0, strlen($strData) - 1);
-
-        $db = $this->pdo->prepare("DELETE FROM $table WHERE $strData");
+        $db = $this->pdo->prepare("DELETE FROM $table WHERE $formatedQueryParams[0]");
 
         return $db->execute(array_values($data));
     }
