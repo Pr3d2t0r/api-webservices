@@ -2,7 +2,7 @@
 define("APPLICATIONPATH", dirname(__FILE__));
 define("DEFAULT_TYPE", "json");
 define('DB_HOSTNAME', "localhost");
-define('DB_NAME', "api");
+define('DB_NAME', "desafio");
 define('DB_USERNAME', "root");
 define('DB_PASSWORD', "");
 define('DB_CHARSET', "utf8");

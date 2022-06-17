@@ -4,14 +4,16 @@ class Application
 {
     public Router $router;
     public Request $request;
+
     public function __construct() {
         $this->router = new Router();
         $this->request = new Request($_GET['path'] ?? '/', $_SERVER['REQUEST_METHOD']);
     }
 
     public function run() {
-        $className = strtoupper($this->request->type) ."Adapter";
+        $className = strtoupper($this->request->type) . "Adapter";
         $adapter = new $className();
+
         try {
             $adapter->set($this->router->use($this->request));
         } catch (Exception $ex) {

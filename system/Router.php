@@ -39,7 +39,7 @@ class Router{
      * @return null
      */
     public function use(Request &$request){
-        if(isset($this->routes[$request->page][$request->method])) {
+        if (isset($this->routes[$request->page][$request->method])) {
             if (method_exists($this->routes[$request->page][strtoupper($request->method)], $request->action)) {
                 return $this->routes[$request->page][strtoupper($request->method)]->{$request->action}($request->parameters);
             }
@@ -49,7 +49,7 @@ class Router{
             }
         }
 
-        if(isset($this->routes['404']['GET'])){
+        if (isset($this->routes['404']['GET'])){
             return $this->routes['404']['GET']->index(['errorCode' => '404']);
         }
         throw new Exception("404 Page Not Found");

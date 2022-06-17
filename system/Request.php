@@ -59,6 +59,7 @@ class Request{
                 return strtoupper($value) != "JSON" && strtoupper($value) != "XML";
             });
         }
+
         $this->page = (chkArray($path, 0) == null) ? '/' : $path[0].'/';
 
         $this->action = (chkArray($path,1) == null) ? 'index' : $path[1];
@@ -68,8 +69,10 @@ class Request{
             return $value != "";
         });
 
-        if (count($path)>2) $path = array_splice($path, 2);
-        else $path = [];
+        if (count($path)>2)
+            $path = array_splice($path, 2);
+        else
+            $path = [];
 
         if (isset($_GET)) {
             $path = $path ?? [];
