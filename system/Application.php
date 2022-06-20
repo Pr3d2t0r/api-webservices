@@ -15,6 +15,8 @@ class Application
         $adapter = new $className();
 
         try {
+            $this->request->security->isValid();
+
             $adapter->set($this->router->use($this->request));
         } catch (Exception $ex) {
             $adapter->set([

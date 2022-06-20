@@ -33,6 +33,14 @@ class Db {
         return $db->fetch();
     }
 
+    public function getByField($table, $field, $value, $whereClause = null, $mode = PDO::FETCH_ASSOC){
+        $db = $this->pdo->prepare("SELECT * FROM $table WHERE $field = ?" . ($whereClause ? " AND " . $whereClause : ""));
+        $db->bindParam(1, $value);
+        $db->execute();
+        $db->setFetchMode($mode);
+        return $db->fetch();
+    }
+
     public function getAll($table, $mode = PDO::FETCH_ASSOC){
         $db = $this->pdo->prepare("SELECT * FROM $table");
         $db->execute();

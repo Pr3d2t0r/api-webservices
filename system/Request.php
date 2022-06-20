@@ -35,6 +35,8 @@ class Request{
      */
     public string $type = DEFAULT_TYPE;
 
+    public Security $security;
+
     /**
      * Request constructor.
      * Envia o url para a função sanitizeUrl e devide o url e coloca cada parte no seu respetivo attr
@@ -80,6 +82,7 @@ class Request{
                 $path['get'][$key] = $value;
         }
         $this->parameters = $path;
+        $this->security = new Security($this->parameters["get"]["apikey"] ?? null);
     }
 
     public function __toString(){
