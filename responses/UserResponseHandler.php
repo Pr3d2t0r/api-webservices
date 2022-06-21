@@ -7,10 +7,10 @@ class UserResponseHandler extends ResponseHandler {
         if (isset($parametros[0]))
             $result = $this->db->getById("users", $parametros[0]);
         else
-            throw new AppException("Missing parameters.");
+            throw new Exception("Missing parameters.");
 
         if ($result === false)
-            throw new AppException("User doesn't exist!");
+            throw new Exception("User doesn't exist!");
 
         return $result;
 
@@ -44,10 +44,10 @@ class UserResponseHandler extends ResponseHandler {
         if (isset($parametros[0]))
             $result = $this->db->getById("users", $parametros[0]);
         else
-            throw new AppException("Missing parameters.");
+            throw new Exception("Missing parameters.");
 
         if ($result === false)
-            throw new AppException("User doesn't exist!");
+            throw new Exception("User doesn't exist!");
 
         $result = $this->db->update("users", [
             "username" => "abc",
@@ -55,7 +55,7 @@ class UserResponseHandler extends ResponseHandler {
         ]);
 
         if ($result === false)
-            throw new AppException("Couldn't update this user.");
+            throw new Exception("Couldn't update this user.");
 
         return [
             "success" => "User updated successfully!"
@@ -68,17 +68,17 @@ class UserResponseHandler extends ResponseHandler {
         if (isset($parametros[0]))
             $result = $this->db->getById("users", $parametros[0]);
         else
-            throw new AppException("Missing parameters.");
+            throw new Exception("Missing parameters.");
 
         if ($result === false)
-            throw new AppException("User doesn't exist!");
+            throw new Exception("User doesn't exist!");
 
         $result = $this->db->delete("users", [
             "id" => $parametros[0]
         ]);
 
         if ($result === false)
-            throw new AppException("Couldn't delete this user.");
+            throw new Exception("Couldn't delete this user.");
 
         return [
             "success" => "User deleted successfully!"

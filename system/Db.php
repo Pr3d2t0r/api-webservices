@@ -50,7 +50,7 @@ class Db {
 
     public function insert($table, $data = []) {
         if (count($data) == 0)
-            throw new AppException("Invalid insert data.");
+            throw new Exception("Invalid insert data.");
 
         $formatedQueryParams = formatQueryParams($data);
 
@@ -63,7 +63,7 @@ class Db {
 
     public function update($table, $data = []) {
         if (count($data) == 0)
-            throw new AppException("Invalid update data.");
+            throw new Exception("Invalid update data.");
 
         $strData = "";
 
@@ -83,7 +83,7 @@ class Db {
 
     public function delete($table, $data = []) {
         if (count($data) == 0)
-            throw new AppException("Invalid delete data.");
+            throw new Exception("Invalid delete data.");
 
         $formatedQueryParams = formatQueryParams($data, " = ?,");
 

@@ -19,11 +19,11 @@ class Security
         }
 
         if (!$this->request->apiKey)
-            throw new AppException("Invalid API Key.");
+            throw new Exception("Invalid API Key.");
 
         $result = $this->db->getByField("api_keys", "token", $this->request->apiKey, "NOW() < valid_til OR valid_til IS NULL");
 
         if (!$result)
-            throw new AppException("API Key Not Found!");
+            throw new Exception("API Key Not Found!");
     }
 }

@@ -21,13 +21,13 @@ class Application
             $this->security->isValid();
 
             $adapter->set($this->router->use($this->request));
-        } catch (AppException $ex) {
-            $adapter->set([
-               "error" => $ex->getMessage()
-            ]);
         } catch (SystemException $e){
             http_response_code(intval($e->getCode()));
             exit;
+        } catch (Exception $ex) {
+            $adapter->set([
+               "error" => $ex->getMessage()
+            ]);
         } finally {
             echo $adapter->run();
             header('Content-Type:application/' . $this->request->type);
