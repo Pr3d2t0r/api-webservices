@@ -35,7 +35,7 @@ class Request{
      */
     public string $type = DEFAULT_TYPE;
 
-    public Security $security;
+    public ?string $apiKey;
 
     /**
      * Request constructor.
@@ -82,7 +82,9 @@ class Request{
                 $path['get'][$key] = $value;
         }
         $this->parameters = $path;
-        $this->security = new Security($this->parameters["get"]["apikey"] ?? null);
+        $this->apiKey = $this->parameters["get"]["apikey"] ?? null;
+
+        unset($this->parameters["get"]["apikey"]);
     }
 
     public function __toString(){

@@ -4,6 +4,7 @@ class Application
 {
     public Router $router;
     public Request $request;
+    public Security $security;
 
     public function __construct() {
         $this->router = new Router();
@@ -11,11 +12,13 @@ class Application
     }
 
     public function run() {
+        $this->security = new Security($this->request);
+
         $className = strtoupper($this->request->type) . "Adapter";
         $adapter = new $className();
 
         try {
-            $this->request->security->isValid();
+            $this->security->isValid();
 
             $adapter->set($this->router->use($this->request));
         } catch (Exception $ex) {
