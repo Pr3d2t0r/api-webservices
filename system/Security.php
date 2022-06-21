@@ -13,19 +13,17 @@ class Security
     }
 
     public function isValid() {
-        //TODO: Verificar se tem algum método não permitido em $config["not_allowed_methods"]
         if (isset($this->config["not_allowed_methods"])){
-            if (inArray($this->config["not_allowed_methods"], $this->request->method, false) !== false) {
-                echo "blocked";
-            }
+            if (inArray($this->config["not_allowed_methods"], $this->request->method, false) !== false)
+                throw new SystemException(405);
         }
 
         if (!$this->request->apiKey)
-            throw new Exception("Invalid API Key.");
+            throw new AppException("Invalid API Key.");
 
         $result = $this->db->getByField("api_keys", "token", $this->request->apiKey, "NOW() < valid_til OR valid_til IS NULL");
 
         if (!$result)
-            throw new Exception("API Key Not Found!");
+            throw new AppException("API Key Not Found!");
     }
 }

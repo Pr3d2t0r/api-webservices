@@ -8,6 +8,7 @@ function autoloader($name) {
     $file = APPLICATIONPATH . '/' . $name . '.php';
     $file2 = APPLICATIONPATH . '/../responses/' . $name . '.php';
     $file3 = APPLICATIONPATH . '/../adapter/' . $name . '.php';
+    $file4 = APPLICATIONPATH . '/exceptions/' . $name . '.php';
 
     if (file_exists($file)) {
         require_once $file;
@@ -21,6 +22,11 @@ function autoloader($name) {
 
     if (file_exists($file3)) {
         require_once $file3;
+        return;
+    }
+
+    if (file_exists($file4)) {
+        require_once $file4;
         return;
     }
 

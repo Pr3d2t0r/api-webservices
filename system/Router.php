@@ -52,6 +52,6 @@ class Router{
         if (isset($this->routes['404']['GET'])){
             return $this->routes['404']['GET']->index(['errorCode' => '404']);
         }
-        throw new Exception("404 Page Not Found");
+        throw new SystemException(404);
     }
 }
