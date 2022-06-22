@@ -18,10 +18,15 @@ class Request{
     public string $action;
 
     /**
-     * Guarda os parametros
+     * Guarda os parametros do url
      * @var array
      */
     public array $parameters;
+
+    public stdClass $get;
+    public stdClass $post;
+    public stdClass $put;
+    public stdClass $delete;
 
     /**
      * Retorna o metodo do pedido
@@ -77,14 +82,47 @@ class Request{
             $path = [];
 
         if (isset($_GET)) {
-            $path = $path ?? [];
+            $this->get = new stdClass();
             foreach ($_GET as $key => $value)
-                $path['get'][$key] = $value;
+                $this->get->{$key} = $value;
         }
-        $this->parameters = $path;
-        $this->apiKey = $this->parameters["get"]["apikey"] ?? null;
 
-        unset($this->parameters["get"]["apikey"]);
+        if (isset($_POST)) {
+            $this->post = new stdClass();
+            foreach ($_POST as $key => $value)
+                $this->post->{$key} = $value;
+        }
+
+        $this->{strtolower($this->method)} = new stdClass();
+
+        $lines = file('php://input');
+        $keyLinePrefix = 'Content-Disposition: form-data; name="';
+
+        $names = [];
+        $counter = 0;
+        $found = false;
+
+        foreach ($lines as $num => $line) {
+            if (strpos($line, $keyLinePrefix) !== false) {
+                $names[$counter] = substr($line, 38, -3);
+                $found = true;
+            } else if($found) {
+                $this->{strtolower($this->method)}->{$names[$counter]} = mb_substr($line, 0, -2, 'UTF-8');
+                if (strlen(trim($this->{strtolower($this->method)}->{$names[$counter]})) > 0){
+                    $found = false;
+                    $counter++;
+                }
+            }
+        }
+
+        var_dump($this->{strtolower($this->method)});
+
+        $this->parameters = $path;
+        $this->apiKey = $this->get->apikey ?? null;
+
+        unset($this->get->apikey);
+        parse_str(file_get_contents("php://input"), $dtt);
+        //var_dump($dtt);
     }
 
     public function __toString(){
