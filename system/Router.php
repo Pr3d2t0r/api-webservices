@@ -19,18 +19,8 @@ class Router{
      * @param ResponseHandler $handler
      * @return null
      */
-    public function get(string $url, ResponseHandler $handler){
-        $this->routes[$url]['GET'] = $handler;
-    }
-
-    /**
-     * Define o manipulador para quando houver um pedido post para essa pagina
-     * @param $url string
-     * @param ResponseHandler $handler
-     * @return null
-     */
-    public function post(string $url, ResponseHandler $handler){
-        $this->routes[$url]['POST'] = $handler;
+    public function response(string $url, ResponseHandler $handler){
+        $this->routes[$url] = $handler;
     }
 
     /**
@@ -39,13 +29,18 @@ class Router{
      * @return null
      */
     public function use(Request &$request){
-        if (isset($this->routes[$request->page][$request->method])) {
-            if (method_exists($this->routes[$request->page][strtoupper($request->method)], $request->action)) {
-                return $this->routes[$request->page][strtoupper($request->method)]->{$request->action}($request->parameters);
+        if (isset($this->routes[$request->page])) {
+            $this->routes[$request->page]->setRequest($request);
+
+            if (method_exists($this->routes[$request->page], $request->action)) {
+                $this->routes[$request->page]->setParameters($request->parameters);
+                return $this->routes[$request->page]->{$request->action}();
             }
-            if (is_numeric($request->action)){
+
+            if (is_numeric($request->action)) {
                 array_unshift($request->parameters, $request->action);
-                return $this->routes[$request->page][strtoupper($request->method)]->index($request->parameters);
+                $this->routes[$request->page]->setParameters($request->parameters);
+                return $this->routes[$request->page]->index();
             }
         }
 

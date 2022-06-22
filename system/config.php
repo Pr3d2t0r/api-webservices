@@ -12,9 +12,9 @@ define('XML_ROOT_ELEMENT', "root");
 define('COMPOSER_AUTOLOAD', "./vendor/autoload.php");
 
 const SECURITY_CONFIG = [
-    "not_allowed_methods" => [
+    /*"not_allowed_methods" => [
         "get"
-    ]
+    ]*/
 ];
 
 require_once "loader.php";

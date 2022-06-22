@@ -2,10 +2,8 @@
 
 class UserResponseHandler extends ResponseHandler {
     public function index(){
-        $parametros = ( func_num_args() >= 1 ) ? func_get_arg(0) : [];
-
-        if (isset($parametros[0]))
-            $result = $this->db->getById("users", $parametros[0]);
+        if (isset($this->parameters[0]))
+            $result = $this->db->getById("users", $this->parameters[0]);
         else
             throw new Exception("Missing parameters.");
 
@@ -33,16 +31,12 @@ class UserResponseHandler extends ResponseHandler {
     }
 
     public function all(){
-        $parametros = ( func_num_args() >= 1 ) ? func_get_arg(0) : [];
-
         return $this->db->getAll("users");
     }
 
     public function update() {
-        $parametros = (func_num_args() >= 1) ? func_get_arg(0) : [];
-
-        if (isset($parametros[0]))
-            $result = $this->db->getById("users", $parametros[0]);
+        if (isset($this->parameters[0]))
+            $result = $this->db->getById("users", $this->parameters[0]);
         else
             throw new Exception("Missing parameters.");
 
@@ -51,7 +45,7 @@ class UserResponseHandler extends ResponseHandler {
 
         $result = $this->db->update("users", [
             "username" => "abc",
-            "id" => $parametros[0],
+            "id" => $this->parameters[0],
         ]);
 
         if ($result === false)
@@ -63,10 +57,8 @@ class UserResponseHandler extends ResponseHandler {
     }
 
     public function delete() {
-        $parametros = (func_num_args() >= 1) ? func_get_arg(0) : [];
-
-        if (isset($parametros[0]))
-            $result = $this->db->getById("users", $parametros[0]);
+        if (isset($this->parameters[0]))
+            $result = $this->db->getById("users", $this->parameters[0]);
         else
             throw new Exception("Missing parameters.");
 
@@ -74,7 +66,7 @@ class UserResponseHandler extends ResponseHandler {
             throw new Exception("User doesn't exist!");
 
         $result = $this->db->delete("users", [
-            "id" => $parametros[0]
+            "id" => $this->parameters[0]
         ]);
 
         if ($result === false)
