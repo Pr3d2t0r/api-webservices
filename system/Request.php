@@ -93,29 +93,30 @@ class Request{
                 $this->post->{$key} = $value;
         }
 
-        $this->{strtolower($this->method)} = new stdClass();
+        if (strtoupper($this->method) != "POST" && strtoupper($this->method) != "GET"){
+            $this->{strtolower($this->method)} = new stdClass();
 
-        $lines = file('php://input');
-        $keyLinePrefix = 'Content-Disposition: form-data; name="';
+            $lines = file('php://input');
+            $keyLinePrefix = 'Content-Disposition: form-data; name="';
 
-        $names = [];
-        $counter = 0;
-        $found = false;
+            $names = [];
+            $counter = 0;
+            $found = false;
 
-        foreach ($lines as $num => $line) {
-            if (strpos($line, $keyLinePrefix) !== false) {
-                $names[$counter] = substr($line, 38, -3);
-                $found = true;
-            } else if($found) {
-                $this->{strtolower($this->method)}->{$names[$counter]} = mb_substr($line, 0, -2, 'UTF-8');
-                if (strlen(trim($this->{strtolower($this->method)}->{$names[$counter]})) > 0){
-                    $found = false;
-                    $counter++;
+            foreach ($lines as $num => $line) {
+                if (strpos($line, $keyLinePrefix) !== false) {
+                    $names[$counter] = substr($line, 38, -3);
+                    $found = true;
+                } else if($found) {
+                    $this->{strtolower($this->method)}->{$names[$counter]} = mb_substr($line, 0, -2, 'UTF-8');
+                    if (strlen(trim($this->{strtolower($this->method)}->{$names[$counter]})) > 0){
+                        $found = false;
+                        $counter++;
+                    }
                 }
             }
         }
 
-        var_dump($this->{strtolower($this->method)});
 
         $this->parameters = $path;
         $this->apiKey = $this->get->apikey ?? null;
