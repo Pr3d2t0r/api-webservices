@@ -23,10 +23,10 @@ class Request{
      */
     public array $parameters;
 
-    public stdClass $get;
-    public stdClass $post;
-    public stdClass $put;
-    public stdClass $delete;
+    public array $get = array();
+    public array $post = array();
+    public array $put = array();
+    public array $delete = array();
 
     /**
      * Retorna o metodo do pedido
@@ -84,19 +84,16 @@ class Request{
             $path = [];
 
         if (isset($_GET)) {
-            $this->get = new stdClass();
             foreach ($_GET as $key => $value)
-                $this->get->{$key} = $value;
+                $this->get[$key] = $value;
         }
 
         if (isset($_POST)) {
-            $this->post = new stdClass();
             foreach ($_POST as $key => $value)
-                $this->post->{$key} = $value;
+                $this->post[$key] = $value;
         }
 
         if (strtoupper($this->method) != "POST" && strtoupper($this->method) != "GET"){
-            $this->{strtolower($this->method)} = new stdClass();
 
             $lines = file('php://input');
             $keyLinePrefix = 'Content-Disposition: form-data; name="';
@@ -110,8 +107,8 @@ class Request{
                     $names[$counter] = substr($line, 38, -3);
                     $found = true;
                 } else if($found) {
-                    $this->{strtolower($this->method)}->{$names[$counter]} = mb_substr($line, 0, -2, 'UTF-8');
-                    if (strlen(trim($this->{strtolower($this->method)}->{$names[$counter]})) > 0){
+                    $this->{strtolower($this->method)}[$names[$counter]] = mb_substr($line, 0, -2, 'UTF-8');
+                    if (strlen(trim($this->{strtolower($this->method)}[$names[$counter]])) > 0){
                         $found = false;
                         $counter++;
                     }
@@ -121,9 +118,9 @@ class Request{
 
 
         $this->parameters = $path;
-        $this->apiKey = $this->get->apikey ?? null;
+        $this->apiKey = $this->get["apikey"] ?? null;
 
-        unset($this->get->apikey);
+        unset($this->get["apikey"]);
         $this->client_ip = $_SERVER['REMOTE_ADDR'];
     }
 

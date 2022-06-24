@@ -5,7 +5,7 @@
  * Class Router
  * @author Rafael Velosa
  */
-class Router{
+class Router implements IRouter {
 
     /**
      * Guarda as rotas

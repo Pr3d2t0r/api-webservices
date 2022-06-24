@@ -2,9 +2,10 @@
 
 class Application
 {
-    public Router $router;
+    public IRouter $router;
     public Request $request;
     public Security $security;
+    public bool $restfull = false;
 
     public function __construct() {
         $this->router = new Router();
@@ -33,4 +34,6 @@ class Application
             header('Content-Type:application/' . $this->request->type);
         }
     }
+
+
 }
