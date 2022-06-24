@@ -34,7 +34,7 @@ class Db {
     }
 
     public function getByField($table, $field, $value, $whereClause = null, $mode = PDO::FETCH_ASSOC){
-        $db = $this->pdo->prepare("SELECT * FROM $table WHERE $field = ?" . ($whereClause ? " AND " . $whereClause : ""));
+        $db = $this->pdo->prepare("SELECT * FROM $table WHERE $field = ?" . ($whereClause ?: ""));
         $db->bindParam(1, $value);
         $db->execute();
         $db->setFetchMode($mode);

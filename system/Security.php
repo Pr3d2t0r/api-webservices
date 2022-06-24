@@ -12,18 +12,28 @@ class Security
         $this->config = array_merge(SECURITY_CONFIG, $config);
     }
 
-    public function isValid() {
-        if (isset($this->config["not_allowed_methods"])){
+    public function isValid()
+    {
+        if (isset($this->config["allowed_methods"])) {
+            if (inArray($this->config["allowed_methods"], $this->request->method, false) === false)
+                throw new SystemException(405);
+        } else if (isset($this->config["not_allowed_methods"])) {
             if (inArray($this->config["not_allowed_methods"], $this->request->method, false) !== false)
                 throw new SystemException(405);
         }
-
+        if ((ENVIRONMENT ?? "development") == "production") {
+            if (isset($this->config["allowed_clients_ip"]) && !empty($this->config["allowed_clients_ip"])) {
+                if (is_array($this->config["allowed_clients_ip"]))
+                    if (inArray($this->config["allowed_clients_ip"], $this->request->client_ip, false) === false)
+                        throw new SystemException(403);
+            }
+        }
         if (!$this->request->apiKey)
-            throw new Exception("Invalid API Key.");
+            throw new SystemException(403);
 
-        $result = $this->db->getByField("api_keys", "token", $this->request->apiKey, "NOW() < valid_til OR valid_til IS NULL");
+        $result = $this->db->getByField("api_keys", "token", $this->request->apiKey, " AND (NOW() < valid_til OR valid_til IS NULL)");
 
         if (!$result)
-            throw new Exception("API Key Not Found!");
+            throw new SystemException(403);
     }
 }

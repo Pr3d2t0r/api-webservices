@@ -42,6 +42,8 @@ class Request{
 
     public ?string $apiKey;
 
+    public string $client_ip;
+
     /**
      * Request constructor.
      * Envia o url para a função sanitizeUrl e devide o url e coloca cada parte no seu respetivo attr
@@ -122,8 +124,7 @@ class Request{
         $this->apiKey = $this->get->apikey ?? null;
 
         unset($this->get->apikey);
-        parse_str(file_get_contents("php://input"), $dtt);
-        //var_dump($dtt);
+        $this->client_ip = $_SERVER['REMOTE_ADDR'];
     }
 
     public function __toString(){
