@@ -44,10 +44,10 @@ class Router implements IRouter {
             }
         } else {
             if (RESTFULL ?? false) {
-                $response = new RestfullResponse();
-
                 if (!is_numeric($request->action))
                     throw new Exception("Invalid parameter.");
+
+                $response = new RestfullResponse();
 
                 $response->setId($request->action);
                 $response->setTable(str_replace("/", "", $request->page));

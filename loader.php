@@ -7,6 +7,6 @@ if (defined("COMPOSER_AUTOLOAD") && COMPOSER_AUTOLOAD !== null)
 
 $app = new Application();
 
-//$app->router->response('user/', new UserResponseHandler());
+$app->router->response('users/', new UserResponseHandler());
 
 $app->run();

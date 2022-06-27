@@ -41,6 +41,14 @@ const SECURITY_CONFIG = [
     "allowed_clients_ip" => [
         "::1",
         "192.168.20.144"
+    ],
+    "restfull" => [
+        "blocked_tables" => [
+            "api_keys"
+        ]
+        /*"allowed_tables" => [
+            "users"
+        ]*/
     ]
 ];
 
