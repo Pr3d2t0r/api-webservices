@@ -42,11 +42,25 @@ class Router implements IRouter {
                 $this->routes[$request->page]->setParameters($request->parameters);
                 return $this->routes[$request->page]->index();
             }
+        } else {
+            if (RESTFULL ?? false) {
+                $response = new RestfullResponse();
+
+                if (!is_numeric($request->action))
+                    throw new Exception("Invalid parameter.");
+
+                $response->setId($request->action);
+                $response->setTable(str_replace("/", "", $request->page));
+                $response->setRequest($request);
+
+                if (method_exists($response, strtolower($request->method)))
+                    return $response->{strtolower($request->method)}();
+            }
         }
 
-        if (isset($this->routes['404']['GET'])){
-            return $this->routes['404']['GET']->index(['errorCode' => '404']);
-        }
+        if (isset($this->routes['404']['GET']))
+            return $this->routes['404']['GET']->index([ 'errorCode' => '404' ]);
+
         throw new SystemException(404);
     }
 }

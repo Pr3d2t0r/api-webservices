@@ -7,7 +7,7 @@ class Application
     public Security $security;
 
     public function __construct() {
-        $this->router = RESTFULL ? new RestfullRouter() : new Router();
+        $this->router = new Router();
         $this->request = new Request($_GET['path'] ?? '/', $_SERVER['REQUEST_METHOD']);
     }
 
