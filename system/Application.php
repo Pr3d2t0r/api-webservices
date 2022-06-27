@@ -5,10 +5,9 @@ class Application
     public IRouter $router;
     public Request $request;
     public Security $security;
-    public bool $restfull = false;
 
     public function __construct() {
-        $this->router = new Router();
+        $this->router = RESTFULL ? new RestfullRouter() : new Router();
         $this->request = new Request($_GET['path'] ?? '/', $_SERVER['REQUEST_METHOD']);
     }
 

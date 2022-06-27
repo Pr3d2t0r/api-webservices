@@ -11,7 +11,18 @@ class RestfullRouter implements IRouter {
      * @param Request $request
      * @return null
      */
-    public function use(Request &$request){
+    public function use(Request &$request) {
+        $response = new RestfullResponse();
+
+        if (!is_numeric($request->action))
+            throw new Exception("Invalid parameters.");
+
+        $response->setId($request->action);
+        $response->setTable(str_replace("/", "", $request->page));
+        $response->setRequest($request);
+
+        if (method_exists($response, strtolower($request->method)))
+            return $response->{strtolower($request->method)}();
 
         throw new SystemException(404);
     }

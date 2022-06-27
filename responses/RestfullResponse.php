@@ -6,7 +6,7 @@ class RestfullResponse{
     protected string $table;
     protected $id;
 
-    public function __construct(){
+    public function __construct() {
         $this->db = new Db();
     }
 
@@ -22,7 +22,7 @@ class RestfullResponse{
         $this->id = $id;
     }
 
-    public function get(){
+    public function get() {
         if ($this->id != null) {
             $result = $this->db->getById($this->table, $this->id);
             if ($result === false)
@@ -32,7 +32,8 @@ class RestfullResponse{
 
         return $this->db->getAll($this->table);
     }
-    public function post(){
+
+    public function post() {
         if (empty($this->request->post))
             throw new Exception("Empty Body!");
         $success = $this->db->insert($this->table, $this->request->post);
@@ -43,7 +44,8 @@ class RestfullResponse{
             "success" => "Inserted successfully!"
         ];
     }
-    public function put(){
+
+    public function put() {
         if (empty($this->request->put))
             throw new Exception("Empty Body!");
 
@@ -63,7 +65,8 @@ class RestfullResponse{
             "success" => "Updated successfully!"
         ];
     }
-    public function delete(){
+
+    public function delete() {
         if ($this->id != null)
             $result = $this->db->getById($this->table, $this->id);
         else

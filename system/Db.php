@@ -54,9 +54,10 @@ class Db {
 
         $formatedQueryParams = formatQueryParams($data);
 
+        $i = 0;
         $db = $this->pdo->prepare("INSERT INTO $table ($formatedQueryParams[0]) VALUES ($formatedQueryParams[1])");
         foreach($data as $value)
-            $db->bindValue($i++, $value);
+            $db->bindValue(++$i, $value);
 
         return $db->execute();
     }

@@ -17,6 +17,7 @@ define('COMPOSER_AUTOLOAD', "./vendor/autoload.php");
  *  production
  */
 define('ENVIRONMENT', "production");
+define('RESTFULL', true);
 /**
  * Options:
  *  Request Method (Best to use one or the other):
