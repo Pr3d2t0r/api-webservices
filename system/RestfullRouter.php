@@ -7,7 +7,7 @@
  */
 class RestfullRouter implements IRouter {
      /**
-     * Retorna o respetivo controlador pa pagina
+     * Retorna o respetivo controlador para a pagina
      * @param Request $request
      * @return null
      */
@@ -15,7 +15,7 @@ class RestfullRouter implements IRouter {
         $response = new RestfullResponse();
 
         if (!is_numeric($request->action))
-            throw new Exception("Invalid parameters.");
+            throw new Exception("Invalid parameter.");
 
         $response->setId($request->action);
         $response->setTable(str_replace("/", "", $request->page));

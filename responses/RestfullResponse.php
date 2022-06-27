@@ -36,6 +36,7 @@ class RestfullResponse{
     public function post() {
         if (empty($this->request->post))
             throw new Exception("Empty Body!");
+
         $success = $this->db->insert($this->table, $this->request->post);
         if ($success === false)
             throw new Exception("Error on inserting!");
@@ -57,7 +58,7 @@ class RestfullResponse{
         if ($result === false)
             throw new Exception("Doesn't exist!");
 
-        $success = $this->db->update($this->table, $this->request->put+["id"=>$this->id]);
+        $success = $this->db->update($this->table, $this->request->put + [ "id" => $this->id]);
         if ($success === false)
             throw new Exception("Error on updating!");
 
