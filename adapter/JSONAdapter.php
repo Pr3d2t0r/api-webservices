@@ -2,7 +2,7 @@
 
 class JSONAdapter extends Adapter {
     public function set($data) {
-        $this->data = json_encode($data);
+        $this->data = json_encode($data, JSON_PRETTY_PRINT);
 
         if (json_last_error() != 0) {
             switch (json_last_error()) {
