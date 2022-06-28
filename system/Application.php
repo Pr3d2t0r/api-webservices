@@ -33,6 +33,4 @@ class Application
             header('Content-Type:application/' . $this->request->type);
         }
     }
-
-
 }

@@ -25,6 +25,9 @@ class RestfullResponse{
     public function get() {
         if ($this->id != null) {
             $result = $this->db->getById($this->table, $this->id);
+            if ($result === null)
+                throw new SystemException(405);
+
             if ($result === false)
                 throw new Exception("Doesn't exist!");
             return $result;
@@ -38,6 +41,9 @@ class RestfullResponse{
             throw new Exception("Empty Body!");
 
         $success = $this->db->insert($this->table, $this->request->post);
+        if ($success === null)
+            throw new SystemException(405);
+
         if ($success === false)
             throw new Exception("Error on inserting!");
 
@@ -54,6 +60,9 @@ class RestfullResponse{
             $result = $this->db->getById($this->table, $this->id);
         else
             throw new Exception("Missing parameters.");
+
+        if ($result === null)
+            throw new SystemException(405);
 
         if ($result === false)
             throw new Exception("Doesn't exist!");
@@ -72,6 +81,9 @@ class RestfullResponse{
             $result = $this->db->getById($this->table, $this->id);
         else
             throw new Exception("Missing parameters.");
+
+        if ($result === null)
+            throw new SystemException(405);
 
         if ($result === false)
             throw new Exception("Doesn't exist!");

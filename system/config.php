@@ -44,7 +44,7 @@ const SECURITY_CONFIG = [
     ],
     "restfull" => [
         "blocked_tables" => [
-            "api_keys"
+            "api_keys",
         ]
         /*"allowed_tables" => [
             "users"
