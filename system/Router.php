@@ -6,7 +6,6 @@
  * @author Rafael Velosa
  */
 class Router implements IRouter {
-
     /**
      * Guarda as rotas
      * @var array
@@ -58,8 +57,8 @@ class Router implements IRouter {
             }
         }
 
-        if (isset($this->routes['404']['GET']))
-            return $this->routes['404']['GET']->index([ 'errorCode' => '404' ]);
+        if (isset($this->routes['404']))
+            return $this->routes['404']->index([ 'errorCode' => '404' ]);
 
         throw new SystemException(404);
     }

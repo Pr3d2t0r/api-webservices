@@ -116,7 +116,6 @@ class Request{
             }
         }
 
-
         $this->parameters = $path;
         $this->apiKey = $this->get["apikey"] ?? null;
 

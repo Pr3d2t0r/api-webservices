@@ -23,13 +23,12 @@ function filter(array &$array, closure $callback){
     foreach ($array as $item)
         if($callback($item)) $newArray[] = $item;
 
-
     $array = $newArray;
     return $newArray;
 }
 
 /**
- * divide um array em varios e retorna esses arrays dentro de um array
+ * Divide um array em varios e retorna esses arrays dentro de um array
  * @param $array
  * @param int $nItems
  * @return array
